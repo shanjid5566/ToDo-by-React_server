@@ -37,6 +37,22 @@ async function run() {
         res.status(500).send({ error: "Something went wrong" });
       }
     });
+    // get completed tasks from db
+
+    app.get("/todos/completed", async (req, res) => {
+      try {
+
+
+        const query = {status : "Completed"}
+        const cursor = await todoCollections.find(query).toArray();
+        console.log(cursor);
+        res.send(cursor);
+      } catch (error) {
+        console.error(error);
+        res.status(500).send({ error: "Something went wrong" });
+      }
+    });
+
     // save tasks in db
     app.post("/todos", async (req, res) => {
       const data = req.body;
@@ -46,12 +62,12 @@ async function run() {
     app.patch("/todos/:taskId", async (req, res) => {
       const id = req.params.taskId;
       const query = { _id: new ObjectId(id) };
-      const { status } = req.body; // 
+      const { status } = req.body; //
 
       try {
         const query = { _id: new ObjectId(id) };
         const updateDoc = {
-          $set: { status: status }, 
+          $set: { status: status },
         };
 
         const result = await todoCollections.updateOne(query, updateDoc);
