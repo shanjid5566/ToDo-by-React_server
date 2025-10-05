@@ -46,12 +46,12 @@ async function run() {
     app.patch("/todos/:taskId", async (req, res) => {
       const id = req.params.taskId;
       const query = { _id: new ObjectId(id) };
-      const { status } = req.body; // front-end থেকে নতুন status পাঠাও
+      const { status } = req.body; // 
 
       try {
         const query = { _id: new ObjectId(id) };
         const updateDoc = {
-          $set: { status: status }, // এখানে status আপডেট হচ্ছে
+          $set: { status: status }, 
         };
 
         const result = await todoCollections.updateOne(query, updateDoc);
@@ -60,7 +60,6 @@ async function run() {
           return res.status(404).send({ message: "No task updated" });
         }
 
-        // আপডেট হওয়া ডকুমেন্ট আবার fetch করতে চাইলে
         const updatedTask = await todoCollections.findOne(query);
 
         res.send(updatedTask);
